@@ -1,0 +1,422 @@
+@use "lp-style" as *;
+
+/* =============================================
+   Heroセクション (_hero.scss)
+   ============================================= */
+
+.hero-header {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - var(--section-px) * 2);
+  padding: 40px 0;
+  z-index: 100;
+  @include mq(lg) {
+    padding: 32px 0 0;
+  }
+  @include mq(sm) {
+    padding: 20px 0 0;
+  }
+
+  .header-logo {
+    width: auto;
+    height: 40px;
+    @include mq(sm) {
+      height: 24px;
+    }
+  }
+}
+
+// SEO用非表示テキスト
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.lp-onetime-wrap {
+  .hero-section {
+    position: relative;
+    width: 100%;
+    min-height: 580px;
+    background-color: var(--navy); // multiply ブレンドのベースカラー
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 96px 0;
+
+    // グラデーションオーバーレイ（左から右へ暗→透明）
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        34deg,
+        rgb(21, 47, 80) 35%,
+        rgba(21, 47, 80, 0.5) 60%,
+        rgba(21, 47, 80, 0) 65%,
+        rgba(21, 47, 80, 0) 100%
+      );
+      pointer-events: none;
+      mix-blend-mode: multiply;
+      z-index: 1;
+    }
+
+    // ▼ 1024px以下：SPレイアウトに切り替え
+    @media (max-width: 1024px) {
+      padding-top: 128px;
+
+      // SP用グラデーション：縦方向
+      &::before {
+        background: linear-gradient(
+          60deg,
+          rgb(21, 47, 80) 35%,
+          rgba(21, 47, 80, 0.5) 60%,
+          rgba(21, 47, 80, 0) 65%,
+          rgba(21, 47, 80, 0) 100%
+        );
+      }
+
+      // hero-section内のPC専用マイクロコピー：非表示
+      .hero-micro-copy {
+        display: none;
+      }
+    }
+
+    @include mq(md) {
+      padding: 96px 0 40px;
+    }
+
+    @include mq(sm) {
+      padding: 48px 0;
+
+      // SP用グラデーション：縦方向
+      &::before {
+        background: linear-gradient(
+          45deg,
+          rgba(21, 47, 80, 1) 0%,
+          rgba(30, 58, 95, 1) 60%,
+          rgba(62, 120, 197, 0.1) 85%,
+          rgba(62, 120, 197, 0) 100%
+        );
+      }
+    }
+  }
+
+  // 背景画像（コンテナに mix-blend-mode: multiply でネイビーと合成）
+  .hero-bg-image {
+    position: absolute;
+    inset: 0;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: right center;
+      @include mq(xl) {
+        object-position: 90% top;
+      }
+    }
+  }
+
+  .hero-container {
+    position: relative;
+    z-index: 3;
+    max-width: var(--content-width);
+    width: 100%;
+    margin: 0 auto;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    padding: 0 64px;
+
+    @media (max-width: 1024px) {
+      max-width: 720px; // スマホ表示化
+      padding: 0 24px;
+      align-items: flex-start;
+    }
+
+    @include mq(md) {
+      width: auto;
+      padding: 0 24px;
+    }
+
+    @include mq(sm) {
+      padding: 0 16px;
+    }
+  }
+
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-m);
+
+    @media (max-width: 1024px) {
+      width: 100%;
+      gap: var(--space-s);
+    }
+  }
+
+  .hero-title-area {
+    display: block;
+
+    picture {
+      @media (max-width: 1024px) {
+        display: none;
+      }
+    }
+  }
+
+  // タイトルはSVG画像で表示
+  .hero-title {
+    display: block;
+
+    img {
+      width: 100%;
+      max-width: 880px;
+      height: auto;
+      filter: drop-shadow(0 0 8px rgb(4, 24, 51));
+      @include mq(xl) {
+        max-width: 760px;
+      }
+    }
+  }
+
+  // PC専用ローリエカードエリア
+  .hero-cards {
+    display: flex;
+    gap: 24px;
+
+    @media (max-width: 1024px) {
+      display: none;
+    }
+
+    img {
+      height: 86px;
+      width: auto;
+
+      &:last-child {
+        filter: drop-shadow(0 0 16px rgba(0, 0, 0, 6));
+      }
+    }
+  }
+
+  // --- 共通CTAユニット ---
+  .common-cta-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 542px;
+    width: 100%;
+    @include mq(sm) {
+      max-width: 388px;
+      width: 100%;
+    }
+  }
+
+  // 虫眼鏡アイコン付きマイクロコピー
+  .hero-micro-copy {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 12px;
+    color: var(--color-bg);
+    letter-spacing: 1px;
+    font-size: 1.1rem;
+    font-weight: bold;
+
+    // 虫眼鏡アイコン
+    .prefix-icon {
+      width: 20px;
+      margin-right: 8px;
+    }
+
+    // SM: 2行になるときアイコンを「あ」の行頭に揃える
+    @include mq(lg) {
+      align-items: flex-start;
+
+      .prefix-icon {
+        margin-top: 3px; // line-height のズレ分を補正
+        position: absolute;
+        left: calc(50% - 100px);
+        transform: translateX(-50%);
+      }
+    }
+  }
+
+  // CTAユニット
+  .hero-cta-unit {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-self: flex-start;
+  }
+
+  // CTAユニット：横並び
+  .hero-cta-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-m);
+
+    // SP専用: CTAユニット：縦並び（上下入れ替え）
+    @media (max-width: 1024px) {
+      flex-direction: column-reverse;
+      gap: var(--space-s);
+    }
+  }
+
+  // リスキリングロゴエリア
+  .hero-keisansho-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    @media (max-width: 1024px) {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+    }
+
+    @include mq(sm) {
+      align-items: flex-end;
+      gap: 8px;
+    }
+  }
+
+  // リスキリングロゴ
+  .hero-keisansho-logo img {
+    width: auto;
+    height: 90px; //必須規定:高さ90px以上
+
+    @media (max-width: 1024px) {
+      width: 100%;
+      height: auto;
+    }
+
+    @include mq(sm) {
+      width: auto;
+      height: 90px;
+    }
+  }
+
+  // --- 70%OFFバッジ（右上・absolute） ---
+  .hero-badge-off {
+    position: absolute;
+    bottom: -48px;
+    right: -128px;
+    z-index: 2;
+
+    @include mq(xl) {
+      bottom: -16px;
+      right: -112px;
+    }
+
+    @media (max-width: 1024px) {
+      display: none;
+    }
+
+    img {
+      width: 200px;
+      height: auto;
+      @include mq(xl) {
+        width: 140px;
+      }
+    }
+  }
+
+  // CTAボタンエリア
+  .hero-btn-custom {
+    position: relative;
+    width: 100%;
+    text-decoration: none;
+    box-sizing: border-box;
+    box-shadow: var(--blur-shadow);
+
+    @include mq(md) {
+      max-width: 400px;
+    }
+
+    // 右矢印アイコン
+    &::after {
+      content: "chevron_right";
+      font-family: "Material Symbols Outlined";
+      font-weight: 400;
+      font-style: normal;
+      display: inline-block;
+      line-height: 1;
+      position: absolute;
+      right: 24px;
+      top: 47%;
+      transform: translateY(-50%);
+      color: var(--color-bg);
+      font-size: 24px;
+      transition: transform 0.2s ease;
+
+      @include mq(sm) {
+        right: 14px;
+        font-size: 16px;
+      }
+    }
+
+    &:hover::after {
+      transform: translateY(-50%) translateX(2px);
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  //---------------------------------------------
+  // PC非表示要素: 1024px以下で表示する
+  //---------------------------------------------
+
+  // メインコピー: タイトル・ローリエカード・バッジ含む
+  // 吹き出し型マイクロコピー
+  .hero-micro-copy-sp,
+  .hero-main-copy-sp-area {
+    display: none;
+  }
+
+  // SP専用: メインコピー画像（タイトル・ローリエカード・バッジ含む）
+  .hero-main-copy-sp-area {
+    @media (max-width: 1024px) {
+      display: block;
+      margin-bottom: 4px;
+      img {
+        width: 100%;
+        filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.5));
+      }
+    }
+  }
+
+  // SP専用: マイクロコピー＋リスキリングロゴ左
+  .hero-micro-copy-sp {
+    @media (max-width: 1024px) {
+      display: flex;
+      align-items: center;
+      position: relative;
+      display: inline-block;
+      margin-bottom: -24px;
+
+      img {
+        filter: drop-shadow(var(--drop-shadow));
+        max-width: 220px;
+        width: 100%;
+        height: auto;
+      }
+    }
+
+    @include mq(sm) {
+      margin-bottom: -16px;
+    }
+  }
+}

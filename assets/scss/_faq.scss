@@ -1,0 +1,150 @@
+@use "lp-style" as *;
+
+/* =============================================
+   SECTION 17 | FAQ (よくある質問)
+   ============================================= */
+
+.faq-section {
+   position: relative;
+   z-index: 10;
+   // 背景はうすいグレー系 (bg) になる想定
+   background-color: var(--color-bg);
+
+   .faq-list {
+      display: flex;
+      flex-direction: column;
+      // 質問同士の隙間は16pxくらいが標準的ですが、適宜ユーティリティクラス等で調整可能です
+      gap: var(--space-s);
+   }
+
+   // FAQの1ブロック
+   .faq-item {
+      background-color: var(--color-white);
+      border-radius: var(--border-radius);
+      overflow: hidden; // 角丸からはみ出ないように
+
+      // ---------------------------------------------
+      // Q: 質問エリア（クリッカブル）
+      // ---------------------------------------------
+      .faq-q {
+         width: 100%;
+         display: flex;
+         align-items: flex-start;
+         gap: var(--space-s); // Qアイコンとテキストの隙間 16px
+         padding: var(--space-m); // 上下左右 32px
+         background: none;
+         border: none;
+         text-align: left;
+         cursor: pointer;
+         color: var(--color-main);
+         transition: opacity 0.3s ease;
+
+         &:hover {
+            opacity: 0.7;
+         }
+
+         .faq-icon-q {
+            font-size: var(--fz-sub-copy); // 20px
+            font-family: var(--font-serif);
+            font-weight: bold;
+            flex-shrink: 0;
+         }
+
+         .faq-q-text {
+            font-size: var(--fz-sub-copy); // 20px
+            font-weight: bold;
+            line-height: 1.5;
+            flex: 1;
+         }
+
+         // 開閉を示すアイコン（＋ / ー など）
+         .faq-toggle-icon {
+            position: relative;
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+            margin-left: auto;
+
+            &::before,
+            &::after {
+               content: "";
+               position: absolute;
+               top: 50%;
+               left: 50%;
+               width: 16px;
+               height: 2px;
+               background-color: var(--color-main);
+               transform: translate(-50%, -50%);
+               transition: transform 0.3s ease;
+            }
+
+            // 縦線（開くと回転して消える）
+            &::after {
+               transform: translate(-50%, -50%) rotate(90deg);
+            }
+         }
+      }
+
+      // ---------------------------------------------
+      // A: 回答エリア（スライドアニメーション）
+      // ---------------------------------------------
+      .faq-a-wrap {
+         display: grid;
+         grid-template-rows: 0fr;
+         transition: grid-template-rows 0.3s ease-out;
+
+         // ★追加：高さを完全に0に絞り込むためのラッパー
+         .faq-a-content {
+            min-height: 0; // これがないと中身の高さに引っ張られる
+            overflow: hidden;
+
+            // 実際の回答の中身
+            .faq-a-inner {
+               display: flex;
+               align-items: flex-start;
+               gap: var(--space-s);
+               padding: 0 var(--space-m) var(--space-m);
+               color: var(--color-main);
+
+               .faq-icon-a {
+                  font-size: var(--fz-sub-copy); // 20px
+                  font-family: var(--font-serif);
+                  font-weight: bold;
+                  flex-shrink: 0;
+               }
+
+               .faq-a-text {
+                  font-size: var(--fz-desc); // 18px
+                  line-height: 1.8;
+                  flex: 1;
+               }
+            }
+         }
+      }
+
+      // --- 開いた状態 (JSで .is-open を付与) ---
+      &.is-open {
+         .faq-q .faq-toggle-icon::after {
+            transform: translate(-50%, -50%) rotate(0deg);
+         }
+
+         .faq-a-wrap {
+            grid-template-rows: 1fr; // 高さを展開
+         }
+      }
+   }
+}
+
+// スマホ用
+@include mq(xl) {
+   .faq-section {
+      .faq-item {
+         .faq-q {
+            padding: var(--space-m) var(--space-s);
+         }
+         .faq-a-wrap .faq-a-content .faq-a-inner {
+            padding: 0 var(--space-s) var(--space-m);
+         }
+      }
+   }
+}

@@ -1,0 +1,64 @@
+@use "lp-style" as *;
+
+/* =============================================
+   SECTION 05 | CTAセクション
+   ============================================= */
+
+.cta-section {
+   position: relative;
+   background-color: var(--color-main);
+   color: var(--color-white);
+   text-align: center;
+
+   // 背景テクスチャ
+   &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      // ご指示のパス（../images/texture/bg_texture.webp）
+      background: url("../images/texture/bg_texture.webp") repeat center/cover;
+      mix-blend-mode: multiply; // ネイビー背景に質感を馴染ませる
+      opacity: 1; // テクスチャの濃さはここで微調整してください
+      pointer-events: none;
+      z-index: 1;
+   }
+
+   // コンテンツを背景テクスチャの上に配置
+   .lp-container {
+      position: relative;
+      z-index: 2;
+   }
+
+   // CTA内部レイアウト
+   .cta-content-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 32px; // メインコピーとボタンの間の余白（指示通り）
+   }
+
+   // メインコピー
+   .cta-main-copy {
+      font-size: 36px;
+      font-family: var(--font-serif) !important; // 高級感を出すため明朝体
+      font-weight: bold;
+      color: var(--color-accent-yellow); // 黄色指定
+      line-height: 1.5;
+      margin: 0;
+   }
+
+   // ボタン部分はFVのクラス（.common-cta-unit, .hero-btn-custom 等）を
+   // HTML側でそのまま使い回すため、ここに独自のCSSは不要です。
+
+   // スマホ用
+   @include mq(md) {
+      .cta-main-copy {
+         font-size: 24px; // スマホでは少し縮小
+         letter-spacing: 1px;
+      }
+   }
+}

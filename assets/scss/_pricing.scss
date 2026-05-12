@@ -1,0 +1,363 @@
+@use "lp-style" as *;
+
+/* =============================================
+   SECTION 13 | Pricing (料金・実質負担額)
+   ============================================= */
+
+.pricing-section {
+   position: relative;
+   z-index: 10;
+
+   // ヘッダーテキストの色を白に強制
+   .lp-sec-header-title,
+   .lp-sec-header-lead {
+      color: var(--color-white);
+   }
+
+   // ---------------------------------------------
+   // 白背景のメインコンテナ
+   // ---------------------------------------------
+   .pricing-white-box {
+      // ★ background-color と color の指定を削除（bg-pure-whiteに完全委任）
+      padding: var(--section-px);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+
+      // ---------------------------------------------
+      // 1. 上部エリア（絶対配置画像 ＋ コピー）
+      // ---------------------------------------------
+      .pricing-top-area {
+         position: relative;
+
+         .pricing-bg-img {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 30%;
+            height: 100%;
+
+            @include mq(xl) {
+               position: relative;
+               top: 0;
+               right: 0;
+               width: 100%;
+               height: 320px;
+               margin-top: 0;
+               margin-bottom: var(--space-m);
+            }
+            @include mq(md) {
+               height: 220px;
+            }
+
+            // ---- SVGアニメーション スタイル ----
+            .subsidy-svg {
+               display: block;
+               width: 100%;
+               height: 100%;
+
+               .face-front {
+                  fill: #eef2f8;
+                  stroke: #1e3a5f;
+                  stroke-width: 1.5;
+               }
+               .face-top {
+                  fill: #c8d8ec;
+                  stroke: #1e3a5f;
+                  stroke-width: 1.5;
+               }
+               .face-right {
+                  fill: #d6e3f0;
+                  stroke: #1e3a5f;
+                  stroke-width: 1.5;
+               }
+               .dotted-line {
+                  fill: none;
+                  stroke: #1e3a5f;
+                  stroke-width: 1.5;
+                  // stroke-dasharray はJSで制御（GSAPアニメーション → 完了後に "6 5" 復元）
+               }
+               .arrow-gold {
+                  fill: #f5a623;
+               }
+            }
+         }
+
+         .pricing-top-text {
+            position: relative;
+            z-index: 2;
+            max-width: 100%;
+            color: var(--curr-text);
+
+            .subsidy-title {
+               font-weight: bold;
+               line-height: 1.4;
+
+               * {
+                  font-family: var(--font-serif);
+               }
+
+               .title-small {
+                  display: block;
+                  font-size: var(--fz-bridge); // 32px
+               }
+
+               .title-large {
+                  display: inline-block;
+                  border-bottom: 1px solid var(--color-accent-gold);
+                  font-size: var(--fz-heading); // 40px
+
+                  @include mq(sm) {
+                     border-bottom: none;
+                     text-decoration: underline var(--color-accent-gold);
+                     text-underline-offset: 4px;
+                  }
+
+                  .title-num {
+                     font-size: 80px;
+                     font-family: var(--font-serif);
+                     color: var(--color-accent-yellow);
+                     line-height: 1;
+
+                     @include mq(xl) {
+                        font-size: 56px;
+                     }
+
+                     @include mq(sm) {
+                        font-size: 48px;
+                     }
+                  }
+               }
+            }
+
+            .subsidy-desc {
+               font-size: var(--fz-sub-copy); // 20px
+               line-height: 1.6;
+               font-weight: bold;
+            }
+         }
+      }
+
+      // ---------------------------------------------
+      // 2. 料金計算図解ブロック
+      // ---------------------------------------------
+      .pricing-calculation {
+         display: flex;
+         align-items: center;
+         gap: var(--space-s);
+
+         @include mq(xl) {
+            flex-direction: column;
+         }
+
+         @include mq(sm) {
+            gap: calc(var(--space-s) / 2);
+         }
+
+         .calc-symbol {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--color-main);
+            color: var(--color-white);
+            font-size: var(--fz-desc);
+            font-weight: bold;
+            flex-shrink: 0;
+
+            @include mq(sm) {
+               position: relative;
+               z-index: 1;
+            }
+         }
+
+         .price-card {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+
+            @include mq(xl) {
+               width: 100%;
+            }
+
+            .card-head {
+               padding: 8px 32px;
+               text-align: center;
+               font-size: var(--fz-lead);
+               font-weight: bold;
+               color: var(--color-white);
+               display: flex;
+               align-items: baseline;
+               justify-content: center;
+
+               .tax-text {
+                  font-size: var(--fz-body);
+               }
+            }
+
+            .card-body {
+               flex: 1;
+               display: flex;
+               align-items: flex-end;
+               justify-content: center;
+               padding: var(--space-m);
+               background-color: var(--color-white);
+               line-height: 1;
+
+               .yen-text {
+                  font-weight: bold;
+               }
+            }
+
+            &.type-normal,
+            &.type-subsidy {
+               .card-body {
+                  .price-num {
+                     font-family: var(--font-serif);
+                     font-size: var(--fz-large);
+                     font-weight: bold;
+                  }
+                  .yen-text {
+                     font-size: var(--fz-lead);
+                  }
+               }
+            }
+
+            // (以下、色やサイズの個別指定は前回と同じため省略せずそのまま記述してください)
+            &.type-normal {
+               border: 2px solid var(--color-main);
+               .card-head {
+                  background-color: var(--color-main);
+               }
+            }
+
+            &.type-result {
+               border: 2px solid var(--color-main);
+               .card-head {
+                  background-color: var(--color-main);
+               }
+            }
+
+            &.type-subsidy {
+               border: 2px solid var(--color-accent-gold);
+
+               .card-head {
+                  background: var(--accent-gold-gradient);
+               }
+               .card-body {
+                  span {
+                     color: var(--color-accent-gold);
+                  }
+                  .max-label {
+                     display: flex;
+                     flex-direction: column;
+                     font-size: var(--fz-desc);
+                     font-weight: bold;
+                     line-height: 1.2;
+                     margin-right: 4px;
+                  }
+               }
+            }
+
+            &.type-result {
+               border: 2px solid var(--color-accent-red);
+               .card-head {
+                  background-image: var(--accent-red-gradient);
+               }
+               .card-body {
+                  padding: var(--space-sm);
+                  color: var(--color-accent-red);
+
+                  .price-num {
+                     letter-spacing: -1px;
+                     font-family: var(--font-serif);
+                     font-size: 64px;
+                     font-weight: bold;
+
+                     @include mq(sm) {
+                        font-size: 48px;
+                     }
+                  }
+                  .yen-text {
+                     font-size: var(--fz-sub-copy);
+                  }
+               }
+            }
+         }
+      }
+
+      // ---------------------------------------------
+      // 3. 注釈テキスト
+      // ---------------------------------------------
+      .pricing-notes {
+         list-style: none;
+         padding: 0;
+         color: var(--curr-text); // 自動反転
+
+         li {
+            font-size: var(--fz-small);
+            line-height: 1.6;
+            font-weight: bold;
+         }
+      }
+
+      // ---------------------------------------------
+      // 4. アテンションブロック
+      // ---------------------------------------------
+      .pricing-attention {
+         display: flex;
+         align-items: center;
+         gap: var(--space-m);
+         padding: var(--space-sm);
+
+         @include mq(xl) {
+            flex-direction: column;
+            text-align: center;
+            margin-top: var(--space-m);
+            padding: 0 var(--space-s) var(--space-m);
+            gap: 0;
+         }
+
+         .attn-icon {
+            width: 64px;
+            height: 64px;
+            flex-shrink: 0;
+
+            @include mq(xl) {
+               margin-top: calc(var(--space-m) * -1);
+               padding: 16px;
+               background-color: var(--color-main);
+               border-radius: 100px;
+            }
+         }
+
+         .attn-text {
+            flex: 1;
+            gap: calc(var(--space-s) / 2);
+
+            .attn-main {
+               font-size: var(--fz-bridge);
+               font-weight: bold;
+               line-height: 1.4;
+
+               .hl-yellow {
+                  color: var(--color-accent-yellow);
+               }
+            }
+
+            .attn-sub {
+               font-size: var(--fz-body);
+               line-height: 1.6;
+
+               @include mq(ipad) {
+                  text-align: left;
+               }
+            }
+         }
+      }
+   }
+}

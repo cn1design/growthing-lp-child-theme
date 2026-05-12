@@ -1,0 +1,9 @@
+node_modules/
+assets/css/*.map
+assets/scss/*.map
+assets/scss/lp-main.css
+assets/scss/lp-main.min.css
+.DS_Store
+.claude/
+*.bak
+_task.md

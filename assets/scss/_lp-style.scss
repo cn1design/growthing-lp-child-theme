@@ -1,0 +1,551 @@
+/* =============================================
+   LP全体 共通ルール＆変数定義
+   ============================================= */
+
+/* --- ブレイクポイント定義（Sass変数） --- */
+$breakpoints: (
+    sm: 599px,
+    md: 768px,
+    lg: 959px,
+    ipad: 1024px,
+    xl: 1199px
+);
+
+/* --- メディアクエリ呼び出し用 Mixin --- */
+/* 使い方： @include mq(md) { スマホ用のスタイル } */
+@mixin mq($breakpoint: md) {
+    @media (max-width: map-get($breakpoints, $breakpoint)) {
+        @content;
+    }
+}
+
+.lp-onetime-wrap {
+    // 基本カラー
+    --color-main: #1e3a5f;
+    --color-sub: #172c47;
+    --color-bg: #f6f6f6;
+    --color-accent-yellow: #f9d663;
+    --color-accent-beige: #f2efe5;
+    --color-accent-gold: #8b6c0e;
+    --color-accent-red: #7b1a1a;
+    --color-cta: #0ea30e;
+    --color-white: #ffffff;
+
+    // 変数のエイリアス
+    --navy: var(--color-main);
+    --green: var(--color-cta);
+
+    // グラデーション定義
+    --main-gradient: linear-gradient(180deg, #1e3a5f 0%, #104d9d 100%);
+    --accent-gold-gradient: linear-gradient(90deg, #a37d0e 0%, #70580e 100%);
+    --accent-red-gradient: linear-gradient(180deg, #bb210d 0%, #5d0f05 100%);
+
+    // デフォルト状態（白背景想定）
+    --curr-text: var(--color-main);
+    --curr-bg: var(--color-white);
+
+    // フォント設定
+    --font-serif: "Noto Serif JP", serif;
+    --font-sans: "Noto Sans JP", sans-serif;
+    --font-roboto: "Roboto", sans-serif;
+
+    // セクション上下余白
+    --section-py: 96px;
+    --section-px: 64px;
+
+    // セクション内余白
+    --space-xl: 64px;
+    --space-l: 48px;
+    --space-m: 32px;
+    --space-sm: 24px; // コンポーネントスペース用
+    --space-s: 16px;
+
+    // コンテナ幅
+    --content-width: 1200px;
+
+    // 角丸
+    --border-radius: 4px;
+
+    // テキストサイズ
+    --fz-title: 4.5rem;
+    --fz-large: 3rem;
+    --fz-heading: 2.5rem;
+    --fz-bridge: 2rem;
+    --fz-lead: 1.5rem;
+    --fz-sub-copy: 1.25rem;
+    --fz-desc: 1.125rem;
+    --fz-body: 1rem;
+    --fz-small: 0.875rem;
+
+    // 文字感覚
+    --letter-spacing-heading: 4px;
+    --letter-spacing-text: 2px;
+
+    // 影の設定
+    --blur-shadow: 0 0 32px 0 rgba(0, 0, 0, 0.1);
+    --drop-shadow: 6px 8px 0 rgba(0, 0, 0, 0.25);
+
+    // ---  iPad mini用変数上書き（Mixin使用） ---
+    @include mq(md) {
+        --content-width: 425px;
+
+        // セクション上下余白
+        --section-py: 60px;
+        --section-px: 32px;
+
+        // セクション内余白
+        --space-xl: 48px;
+        --space-l: 32px;
+        --space-m: 24px;
+        --space-sm: 20px;
+
+        // フォントサイズ
+        --fz-title: 3.5rem;
+        --fz-large: 2.5rem;
+        --fz-heading: 2rem;
+        --fz-bridge: 1.5rem;
+        --fz-lead: 1.25rem;
+        --fz-sub-copy: 1.125rem;
+        --fz-body: 1rem;
+        --fz-desc: 1rem;
+        --letter-spacing-heading: 2px;
+        --letter-spacing-text: 1px;
+    }
+
+    // --- スマホ用変数上書き（Mixin使用） ---
+    @include mq(sm) {
+        // セクション上下余白
+        --section-py: 48px;
+        --section-px: 16px;
+
+        // セクション内余白
+        --space-xl: 32px;
+
+        // フォントサイズ
+        --fz-title: 2.5rem;
+        --fz-large: 2rem;
+        --fz-heading: 1.65rem;
+        --fz-bridge: 1.5rem; // 24px
+        --fz-lead: 1.125rem; // 18px
+        --fz-sub-copy: 1.125rem; // 18px
+        --fz-body: 1rem; // 16px
+        --fz-small: 0.875rem; // 14px
+
+        // 文字感覚
+        --letter-spacing-heading: 1px;
+        --letter-spacing-text: 0.5px;
+    }
+
+    // 最外郭の設定（ヘッダーを除く）
+    background-color: var(--color-bg); // 背景色
+    overflow-x: hidden; // 横スクロールを禁止
+    font-family: var(--font-sans);
+    color: var(--color-main);
+
+    //  フォントファミリー固定
+    h1,
+    h2,
+    h3 {
+        font-family: var(--font-serif);
+    }
+
+    p,
+    li,
+    a,
+    span {
+        font-family: var(--font-sans);
+    }
+
+    h1,
+    h2 {
+        letter-spacing: var(--letter-spacing-heading);
+    }
+
+    h3,
+    p,
+    li {
+        letter-spacing: var(--letter-spacing-text);
+    }
+
+    // すべてのテキスト要素は、直近の --curr-text 変数の色になる
+    // （spanは除外。デフォルトはメインカラー）
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    ul,
+    li {
+        color: var(--curr-text, var(--color-main));
+    }
+
+    figure.image-bg-white {
+        width: 100%;
+        height: 100%;
+        background-color: var(--color-bg);
+    }
+
+    //=============================================
+    //個別セクション・特殊ルール
+    //=============================================
+
+    // ★追加：エビデンス（Evidence）セクションの左寄せリードのみ行間 2.6 を適用
+    .lp-sec-header.is-left .lp-sec-header-lead {
+        line-height: 2.6;
+    }
+
+    // （以前追加したタイトル黄色のルールもここにまとめておくと管理しやすいです）
+    .lp-sec-header.is-left .lp-sec-header-title {
+        color: var(--color-accent-yellow);
+    }
+
+    //=============================================
+    //背景色による自動カラー切り替えルール
+    //---------------------------------------------
+    // ★追加：背景ネイビー(.bg-navy) または エビデンスセクション かつ 左揃え の時、タイトルを黄色に
+    .bg-navy .lp-sec-header.is-left .lp-sec-header-title,
+    .evidence-section .lp-sec-header.is-left .lp-sec-header-title {
+        color: var(--color-accent-yellow);
+    }
+
+    //=============================================
+    //装飾・強調ユーティリティクラス
+    //---------------------------------------------
+
+    // 1. 黄色文字＋太字（一番よく使うアクセント）
+    .lp-hl-yellow {
+        color: var(--color-accent-yellow);
+        font-weight: bold;
+    }
+
+    // 2. 黄色マーカー（下1/3に太めのマーカーを引く＋太字）
+    .lp-marker-yellow {
+        // transparent 65% で上部を透明にし、残り35%をマーカー色に。
+        // 文字のベースラインより少し下まで色が乗る「はみ出し感」が出ます
+        background: linear-gradient(transparent 65%, var(--color-accent-yellow) 65%);
+        font-weight: bold;
+        // paddingを指定することで、文字の左右に少しだけマーカーをはみ出させます
+        padding: 0 4px;
+
+        @include mq(sm) {
+            font-feature-settings: "palt";
+        }
+    }
+
+    // 3. ゴールドグラデーション文字＋太字
+    .lp-hl-gold {
+        // _lp-style.scss の上部で定義済みの変数を呼び出し
+        background-image: var(--accent-gold-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: bold;
+    }
+
+    // 太字のみ（色変更なし）
+    .lp-fw-bold {
+        font-weight: bold;
+    }
+
+    // =============================================
+    // 3層構造 共通レイアウトルール（ネスト化）
+    // =============================================
+    .lp-sec-wrap {
+        padding-top: var(--section-py);
+        padding-bottom: var(--section-py);
+        width: 100%;
+    }
+
+    .lp-container {
+        padding-left: var(--section-px);
+        padding-right: var(--section-px);
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .lp-content {
+        max-width: var(--content-width);
+        margin: 0 auto;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-xl);
+    }
+
+    // 縦棒ボーダー
+    .vertical-line {
+        width: 1px;
+        height: 48px;
+        background-color: var(--color-white);
+    }
+}
+
+/* =============================================
+   テキストユーティリティ＆共通セクション見出し
+   ============================================= */
+.lp-text-lead {
+    font-size: var(--fz-sub-copy);
+    font-weight: bold;
+    line-height: 1.6;
+}
+.lp-text-bridge {
+    font-size: var(--fz-bridge);
+    font-weight: bold;
+    line-height: 1.6;
+}
+.lp-text-body {
+    font-size: var(--fz-body);
+    line-height: 1.8;
+}
+.lp-text-small {
+    font-size: var(--fz-small);
+    line-height: 1.6;
+}
+
+.lp-hl-yellow {
+    color: var(--color-accent-yellow);
+    font-weight: bold;
+}
+.lp-fw-bold {
+    font-weight: bold;
+}
+.lp-marker-yellow {
+    background: linear-gradient(transparent 60%, rgba(249, 214, 99, 0.6) 60%);
+    font-weight: bold;
+}
+
+/* =============================================
+   ユーティリティクラス（Utility）
+   ============================================= */
+
+// ---------------------------------------------
+// 1. レイアウト方向
+// ---------------------------------------------
+.u-flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.u-flex-row {
+    display: flex;
+    flex-direction: row;
+}
+
+// ---------------------------------------------
+// 2. 余白（Gap）専用
+// ※ 親が display: flex; または display: grid; であることが前提
+// ---------------------------------------------
+
+.u-gap-xl {
+    gap: var(--space-xl);
+} // 64px
+.u-gap-l {
+    gap: var(--space-l);
+} // 48px
+.u-gap-m {
+    gap: var(--space-m);
+} // 32px
+.u-gap-sm {
+    gap: var(--space-sm);
+} // 24px
+.u-gap-s {
+    gap: var(--space-s);
+} // 16px
+
+.u-hidden-sp {
+    display: none !important;
+}
+// lg以下・425px以上で再表示（425px未満=スマホでは非表示のまま）
+@media (max-width: map-get($breakpoints, lg)) and (min-width: 425px) {
+    .u-hidden-sp {
+        display: block !important;
+    }
+}
+
+// PCのみ改行（スマホでは非表示）
+.u-br-pc {
+    display: inline; // デフォルトで表示
+
+    @include mq(md) {
+        display: none !important;
+    }
+}
+
+// スマホのみ改行（PCでは非表示）
+.u-br-sp {
+    display: none; // デフォルトで非表示
+
+    @include mq(ipad) {
+        display: inline !important;
+    }
+}
+
+.u-sp-block {
+    @include mq(ipad) {
+        display: block;
+    }
+}
+
+/* =============================================
+   共通セクション見出しモジュール（決定版）
+   ============================================= */
+.lp-sec-header {
+    position: relative;
+    text-align: center;
+
+    // ---------------------------------------------
+    // 左寄せパターン（モディファイア）
+    // ---------------------------------------------
+    &.is-left {
+        text-align: left;
+
+        // ★追加：左揃え時はタイトルとリード文の余白を48pxに確定
+        .lp-sec-header-title {
+            text-align: left;
+            margin-bottom: var(--space-l);
+        }
+
+        .lp-sec-header-lead {
+            padding-left: var(--space-l);
+            text-align: left;
+
+            &::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0.3em;
+                bottom: 0.3em;
+                width: 2px;
+                background-color: var(--color-white);
+            }
+        }
+    }
+
+    // ---------------------------------------------
+    // 要素ごとのスタイル（bg, title, lead）
+    // ---------------------------------------------
+    // ---------------------------------------------
+    // 1. 巨大背景英語テキスト
+    // ---------------------------------------------
+    &-bg {
+        position: absolute;
+        top: -64px;
+        left: 50%;
+        transform: translate(-50%, -20%); // デフォルトは中央配置
+
+        // デザインスペック
+        font-size: 208px;
+        font-family: "Futura", "Futura Medium", "Roboto", sans-serif;
+        font-weight: 500; // Medium
+        letter-spacing: 14px;
+        color: rgba(125, 140, 159, 0.05);
+
+        line-height: 1;
+        white-space: nowrap;
+        text-transform: uppercase;
+        pointer-events: none;
+        z-index: 1;
+
+        @include mq(sm) {
+            font-size: clamp(56px, 15vw, 120px);
+            top: -24px; // 基準位置を引き上げ（間延び防止）
+            letter-spacing: 8px; // 視認性維持のため字間も縮小
+        }
+
+        // 縦向き（右端ピッタリ配置）クラス
+        &.is-vertical {
+            left: auto;
+            right: -1%;
+            top: 50%;
+            color: rgba(255, 255, 255, 0.03);
+
+            // 画面右端に固定し、中央を軸に-90度回転
+            transform: rotate(90deg) translateX(50%);
+            transform-origin: right center;
+            letter-spacing: 20px; // 縦に流れるので少し広めが綺麗です
+
+            @include mq(sm) {
+                top: -24px; // 基準位置を引き上げ（間延び防止）
+                left: 50%;
+                right: auto;
+                transform: translate(-50%, -20%); // デフォルトは中央配置
+                color: rgba(125, 140, 159, 0.05);
+                font-size: clamp(56px, 15vw, 120px);
+                letter-spacing: 8px; // 視認性維持のため字間も縮小
+            }
+        }
+    }
+
+    &-title {
+        position: relative;
+        z-index: 2;
+        font-size: var(--fz-heading);
+        font-weight: bold;
+        line-height: 1.5;
+        letter-spacing: 4px;
+        margin-bottom: var(--space-m); // 中央揃えの時のデフォルト余白
+    }
+
+    &-lead {
+        position: relative;
+        line-height: 2;
+        letter-spacing: 2px;
+        z-index: 2;
+        font-size: var(--fz-sub-copy);
+        margin: 0; // 意味の塊を分けるための Pタグ設定
+
+        @include mq(lg) {
+            text-align: left;
+            font-size: var(--fz-body);
+        }
+
+        p {
+            margin: 0;
+            &:not(:last-child) {
+                margin-bottom: var(--space-sm); // 24px
+            }
+
+            @include mq(md) {
+                text-align: left;
+            }
+        }
+    }
+}
+
+// ---------------------------------------------
+// 3. カウンターシステム（自動番号振り）
+// ---------------------------------------------
+// ★修正：このクラスを親（ulなど）に1つ付けるだけで完結させる
+.u-counter-list {
+    counter-reset: lp-counter;
+
+    // 直下の子要素すべてに対して、自動的にカウントを進める
+    > * {
+        counter-increment: lp-counter;
+    }
+}
+
+/* =============================================
+   カラーテーマ・ユーティリティ（AIプロンプト化前提ルール）
+   ============================================= */
+
+// 1. 白背景テーマ
+.bg-white {
+    background-color: var(--color-bg);
+    // 直接 color を指定せず、変数だけをメインカラーに切り替える
+    --curr-text: var(--color-main);
+}
+
+// 2. ネイビー背景テーマ
+.bg-navy {
+    background-color: var(--color-main);
+    // 直接 color を指定せず、変数だけを白に切り替える
+    --curr-text: var(--color-white);
+}
+
+// 3. 真っ白背景テーマ（Pricingセクション等の白い箱用）
+.bg-pure-white {
+    background-color: var(--color-white);
+    --curr-text: var(--color-main);
+}

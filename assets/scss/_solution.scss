@@ -1,0 +1,354 @@
+@use "lp-style" as *;
+
+/* =============================================
+   SECTION 06 | ソリューション（解決策）
+   ============================================= */
+.lp-onetime-wrap {
+   .solution-section {
+      // 上部：前セクションからの受け皿はそのまま
+      padding-top: calc(var(--section-py) + 96px);
+   }
+}
+
+.solution-section {
+   position: relative;
+   z-index: 2;
+
+   .lp-sec-header-title {
+      color: var(--color-main);
+   }
+
+   // ---------------------------------------------
+   // 1. 比較ブロック
+   // ---------------------------------------------
+   .comparison-block {
+      display: flex;
+      gap: 0;
+      max-width: 960px;
+      width: 100%;
+      margin: 0 auto;
+
+      @include mq(lg) {
+         flex-direction: column;
+         max-width: 425px;
+         gap: var(--space-s);
+      }
+
+      .compare-col {
+         flex: 1;
+      }
+
+      .compare-box {
+         position: relative;
+         padding: var(--space-m);
+         border: none;
+
+         // 吹き出しのしっぽ
+         &::after {
+            content: "";
+            position: absolute;
+            bottom: -45px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 84px;
+            height: 45px;
+            background-color: inherit;
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
+            z-index: 1;
+
+            @include mq(lg) {
+               bottom: -24px;
+               width: 64px;
+               height: 32px;
+            }
+         }
+
+         h3 {
+            display: flex;
+            align-items: center;
+            font-size: var(--fz-lead);
+            font-weight: bold;
+            margin-bottom: var(--space-sm);
+            line-height: 1;
+            font-family: var(--font-sans);
+            color: inherit; // 親のカラー設定を継承（1カラム目：ネイビー / 2カラム目：白）
+
+            &::before {
+               content: "";
+               display: inline-block;
+               width: 4px;
+               height: var(--space-m);
+               margin-right: 16px;
+               background-color: currentColor;
+            }
+         }
+
+         ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            li {
+               position: relative;
+               margin-bottom: 8px;
+               padding-left: 32px;
+               font-weight: bold;
+               line-height: 1.6;
+               font-size: var(--fz-desc);
+               &:last-child {
+                  margin-bottom: 0;
+               }
+
+               @include mq(sm) {
+                  padding-left: 28px;
+               }
+
+               &::before {
+                  content: "\e86c";
+                  font-family: "Material Symbols Outlined";
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  font-size: 18px;
+                  color: currentColor;
+               }
+            }
+         }
+      }
+
+      .compare-left .compare-box {
+         background-color: var(--color-white);
+
+         * {
+            color: var(--color-main);
+            font-weight: 400;
+         }
+      }
+
+      .compare-right {
+         .compare-box {
+            background-color: var(--color-main);
+
+            * {
+               color: var(--color-white);
+            }
+         }
+
+         .compare-caption {
+            font-weight: bold;
+         }
+      }
+
+      .compare-content-area {
+         padding: var(--space-xl) var(--space-sm) 0;
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+
+         @include mq(lg) {
+            padding: var(--space-xl) 0 0;
+         }
+      }
+
+      .compare-caption {
+         text-align: center;
+         line-height: 1.6;
+         font-size: var(--fz-lead);
+         color: var(--color-main);
+
+         // 1カラム目（若手側）のみ細字にする
+         .compare-left & {
+            font-weight: 400; // 細字指定
+         }
+         .compare-right & {
+            font-weight: bold; // 2カラム目は強調
+         }
+      }
+
+      .compare-image {
+         width: 100%;
+         height: auto;
+         object-fit: contain; // 切り抜きイラスト用に変更
+         mix-blend-mode: darken;
+      }
+   }
+
+   // ---------------------------------------------
+   // 2. 中見出し ＆ 業務アイコンリスト
+   // ---------------------------------------------
+   .solution-mid-title {
+      text-align: center;
+      font-size: var(--fz-bridge);
+      font-family: var(--font-serif);
+      font-weight: bold;
+      line-height: 1.6;
+      letter-spacing: 2px;
+      margin-bottom: 64px; // ブロック間64px維持のため
+      color: var(--color-main);
+   }
+
+   .task-list-wrap {
+      position: relative;
+      text-align: center;
+      padding: 0;
+      margin-bottom: var(--space-l);
+
+      &::before {
+         content: "";
+         position: absolute;
+         bottom: 0;
+         left: 50%;
+         transform: translateX(-50%);
+         width: 100vw;
+         height: 66.66%;
+         background-color: var(--color-white);
+         z-index: -1;
+
+         @include mq(lg) {
+            height: calc(100% - 180px);
+         }
+      }
+   }
+
+   .task-list-title {
+      position: relative;
+      display: inline-block;
+      font-size: var(--fz-lead);
+      font-weight: 400;
+      margin-bottom: 48px;
+      padding: 0 24px; // padding-top: 0 に変更
+      color: var(--color-main);
+
+      &::before,
+      &::after {
+         content: "";
+         position: absolute;
+         top: 50%;
+         transform: translateY(-50%);
+         width: 153px;
+         height: 1px;
+         background-color: var(--color-main);
+
+         @include mq(lg) {
+            width: 96px;
+         }
+      }
+      &::before {
+         right: 100%;
+      }
+      &::after {
+         left: 100%;
+      }
+   }
+
+   .task-list {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      margin-bottom: 48px;
+
+      @include mq(lg) {
+         display: grid;
+         grid-template-columns: repeat(2, 1fr);
+         gap: var(--space-s);
+         max-width: 320px;
+         margin-left: auto;
+         margin-right: auto;
+      }
+
+      // 円形の背景の中に画像とテキストを配置
+      .task-icon-circle {
+         display: flex;
+         flex-direction: column; // 縦並びに変更
+         align-items: center;
+         justify-content: center;
+         width: 180px;
+         height: 180px;
+         border-radius: 50%;
+         background-color: var(--color-white);
+         box-shadow: var(--blur-shadow);
+
+         img {
+            width: auto;
+            height: 64px;
+            margin-bottom: 12px; // 下の文字との余白
+            mix-blend-mode: multiply;
+         }
+
+         @include mq(lg) {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto;
+
+            img {
+               width: auto;
+               height: 48px;
+               margin-bottom: 8px;
+            }
+         }
+
+         .task-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--color-main);
+            line-height: 1.2;
+
+            @include mq(lg) {
+               font-size: 14px;
+            }
+         }
+      }
+   }
+
+   .task-result-text {
+      text-align: center;
+      font-size: var(--fz-heading);
+      font-weight: bold;
+      margin-bottom: calc(var(--space-xl) * 2);
+      color: var(--color-main);
+   }
+
+   // ---------------------------------------------
+   // 3. 下部 2カラムブロック
+   // ---------------------------------------------
+   .bottom-2col-block {
+      display: flex;
+      align-items: flex-start;
+
+      @include mq(lg) {
+         flex-direction: column-reverse;
+         max-width: 425px;
+         margin: 0 auto;
+      }
+
+      .col-image {
+         position: relative;
+         width: 50%;
+         height: auto;
+         object-fit: cover;
+
+         @include mq(lg) {
+            width: 100%;
+            margin-bottom: -56px;
+         }
+      }
+
+      .col-text {
+         width: 50%;
+
+         @include mq(lg) {
+            width: 100%;
+         }
+
+         p {
+            letter-spacing: 2px;
+            line-height: 2.4;
+            font-size: var(--fz-sub-copy);
+
+            @include mq(ipad) {
+               line-height: 2;
+               font-size: var(--fz-desc);
+            }
+         }
+      }
+   }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "massive_tcd084-child",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "sass --no-source-map assets/scss/lp-main.scss:assets/css/lp-main.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "sass": "^1.99.0"
+  }
+}

@@ -1,0 +1,173 @@
+@use "lp-style" as *;
+
+/* =============================================
+   SECTION 04 | ソリューション (リーズン ＆ ブリッジ)
+   ============================================= */
+
+// ---------------------------------------------
+// 前半：ソリューション（リーズン）エリア
+// ---------------------------------------------
+
+.lp-onetime-wrap .lp-sec-wrap.reason-section {
+   // ソリューションセクションのV字に侵食されるため、その分の余白を確保
+   padding-bottom: calc(var(--section-py) + var(--section-py));
+}
+
+.reason-section {
+   position: relative;
+   background-color: var(--color-bg); // 少しグレーがかった背景色
+
+   // 下部：次のセクションを「侵食」する設定
+   clip-path: polygon(0 0, 100% 0, 100% calc(100% - 96px), 50% 100%, 0 calc(100% - 96px));
+   margin-bottom: -96px; // V字の高さ分だけ、次のセクションを上に引っ張り上げる
+   z-index: 1; // ソリューションセクションの下に潜り込む
+
+   // 見出しの微調整
+   .lp-sec-header-title {
+      color: var(--color-main);
+   }
+
+   // --- 5枚の画像＋テキスト カラム ---
+   .reason-step-wrapper {
+      position: relative;
+
+      @include mq(md) {
+         margin: 0 auto;
+         padding: 0 var(--section-px);
+      }
+   }
+
+   .reason-step-list {
+      display: flex;
+      flex-direction: column;
+      gap: 64px; // 静的表示用の余白
+   }
+
+   .reason-step-item {
+      display: flex;
+      align-items: center;
+
+      .step-image {
+         width: 45%;
+         flex-shrink: 0;
+         mix-blend-mode: darken;
+
+         img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+            border-radius: var(--border-radius);
+            background-color: #e0e0e0; // 画像がない時の仮背景
+         }
+      }
+
+      .step-text {
+         width: 55%;
+
+         p {
+            font-size: var(--fz-sub-copy); // 20px想定
+            line-height: 2.2;
+            letter-spacing: 2px;
+            color: var(--color-main);
+
+            &:not(:last-child) {
+               margin-bottom: var(--space-m);
+            }
+         }
+      }
+
+      // スマホ用（縦並び）
+      @include mq(md) {
+         flex-direction: column;
+         gap: 24px;
+
+         .step-image,
+         .step-text {
+            width: 100%;
+         }
+
+         .step-text p {
+            font-size: var(--fz-body); // 16pxに縮小
+         }
+      }
+   }
+
+   @include mq(sm) {
+      clip-path: polygon(0 0, 100% 0, 100% calc(100% - 32px), 50% 100%, 0 calc(100% - 32px));
+   }
+}
+
+// ---------------------------------------------
+// 後半：ソリューション・ブリッジエリア
+// ---------------------------------------------
+
+.lp-onetime-wrap .lp-sec-wrap.reason-bridge-section {
+   // ソリューションセクションのV字に侵食されるため、その分の余白を確保
+   padding-top: calc(var(--section-py) + 96px);
+}
+
+.reason-bridge-section {
+   position: relative;
+   background-color: var(--color-main);
+   color: var(--color-white);
+   text-align: center;
+
+   .bridge-content-inner {
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-l);
+   }
+
+   .text-top {
+      font-size: var(--fz-lead);
+      line-height: 1.8;
+      letter-spacing: var(--letter-spacing-text);
+      font-weight: bold;
+      margin: 0;
+   }
+
+   .text-ai-large {
+      font-size: var(--fz-title);
+      font-family: var(--font-serif);
+      font-weight: bold;
+      color: var(--color-accent-yellow); // 「AI」の文字色
+      line-height: 1;
+      letter-spacing: var(--letter-spacing-text);
+      margin: 0;
+
+      span {
+         font-size: var(--fz-large);
+         color: var(--color-white);
+         margin-left: 8px;
+      }
+   }
+
+   .text-declare {
+      font-size: var(--fz-bridge);
+      font-family: var(--font-serif);
+      font-weight: bold;
+      letter-spacing: var(--letter-spacing-text);
+      margin: 0;
+   }
+
+   // 白背景のハイライトボックス
+   .highlight-box {
+      background-color: var(--color-white);
+      padding: var(--space-l) var(--space-xl);
+      width: auto;
+      border-radius: var(--border-radius);
+
+      p {
+         color: var(--color-main);
+         font-size: var(--fz-heading);
+         font-family: var(--font-serif);
+         font-weight: bold;
+         line-height: 1.6;
+         margin: 0;
+         letter-spacing: var(--letter-spacing-text);
+      }
+   }
+}

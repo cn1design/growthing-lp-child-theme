@@ -1,0 +1,111 @@
+@use "lp-style" as *;
+
+/* =============================================
+   問題提起セクション (_problem.scss)
+   ============================================= */
+
+.problem-section {
+    position: relative;
+    background-color: var(--color-main);
+    overflow: hidden;
+
+    // 内部コンテナg
+    .problem-container-inner {
+        position: relative;
+        z-index: 2;
+    }
+
+    // リスト部分
+    .problem-list {
+        list-style: none;
+        padding: 0;
+
+        @include mq(sm) {
+            padding: 0 var(--section-px);
+        }
+    }
+
+    .problem-item {
+        display: flex;
+        flex-direction: row; // PCは横
+        align-items: center;
+        padding-bottom: var(--space-m);
+        margin-bottom: var(--space-m);
+        border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+        background-color: var(--color-main);
+
+        &:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        @include mq(md) {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: var(--space-sm);
+        }
+    }
+
+    .problem-img-area {
+        position: relative;
+        width: 30%;
+        flex-shrink: 0;
+        mix-blend-mode: lighten;
+
+        // CSSカウンターを使ったバッジの生成
+        &::before {
+            /* 内容： "ISSUE" + 改行 + 0付き番号 */
+            content: "ISSUE\A" counter(lp-counter, decimal-leading-zero);
+
+            /* デザイン設定 */
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            width: 64px; // デザインに合わせて調整
+            height: 64px;
+            border-radius: 50%;
+            background-color: var(--color-white);
+            color: var(--color-main);
+
+            /* テキストの配置設定 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            line-height: 1.2;
+            letter-spacing: 0;
+            white-space: pre; // \A（改行）を有効にするために必須
+            font-family: var(--font-sans);
+
+            @include mq(md) {
+                width: 48px;
+                height: 48px;
+                font-size: 12px;
+            }
+        }
+
+        @include mq(md) {
+            width: 100%;
+        }
+
+        img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+            border-radius: var(--border-radius);
+        }
+    }
+
+    .problem-text-area {
+        p {
+            font-size: var(--fz-lead);
+            line-height: 1.8;
+            letter-spacing: var(--letter-spacing-text);
+        }
+    }
+}

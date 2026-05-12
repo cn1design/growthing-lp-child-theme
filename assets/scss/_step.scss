@@ -1,0 +1,298 @@
+@use "lp-style" as *;
+
+/* =============================================
+   SECTION 11 | Step (ロードマップ)
+   ============================================= */
+
+.step-section {
+   position: relative;
+   z-index: 1; // Caseセクションの斜め背景の下に潜るように設定
+
+   // ---------------------------------------------
+   // 白背景のコンテナ（PC時のみ）/ ステップリスト本体
+   // ---------------------------------------------
+   .step-white-box {
+      background-color: var(--color-white);
+      padding: var(--section-px);
+      border-radius: var(--border-radius);
+
+      @include mq(md) {
+         background-color: transparent;
+         padding: 0;
+      }
+   }
+
+   .step-list {
+      display: flex;
+      flex-direction: column;
+
+      @include mq(xl) {
+         max-width: 660px;
+         margin: 0 auto;
+      }
+
+      .step-item {
+         position: relative;
+         padding-left: calc(72px + var(--space-l)); // カウンター幅72px + 余白48px
+
+         // =============================================
+         // アニメーションの初期状態（フェードイン待機）
+         // =============================================
+         opacity: 0;
+         transform: translateY(20px);
+         transition:
+            opacity 0.6s ease-out,
+            transform 0.6s ease-out;
+
+         @include mq(xl) {
+            padding-left: 88px;
+            padding-top: 0;
+            padding-bottom: 64px;
+         }
+
+         @include mq(md) {
+            padding-left: 64px;
+            padding-top: 0;
+            padding-bottom: 40px;
+         }
+
+         // =============================================
+         // 伸びる縦線 (ボーダー)
+         // =============================================
+         .step-line {
+            position: absolute;
+            top: 88px; // カウンターの下からスタート
+            left: 44px; // カウンターの中心 (88/2)
+            width: 2px;
+            height: 0;
+            background-color: var(--color-main);
+            opacity: 0.3;
+            transition: height 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s;
+            z-index: 1;
+
+            @include mq(xl) {
+               display: block;
+               left: 32px;
+               top: 64px;
+            }
+
+            @include mq(md) {
+               left: 23px;
+               top: 54px;
+            }
+         }
+
+         // 線を伸ばすアニメーション
+         &.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+
+            .step-line {
+               height: calc(100% - 88px);
+
+               @include mq(xl) {
+                  height: calc(100% - 64px);
+               }
+            }
+         }
+
+         // 最後のアイテムは線を引かない
+         &:last-child .step-line {
+            display: none !important;
+         }
+
+         // =============================================
+         // 擬似要素カウンター (円と数字、STEPの文字)
+         // =============================================
+         // 1. 数字と円の背景 (::before)
+         &::before {
+            content: counter(lp-counter, decimal-leading-zero);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 88px;
+            height: 88px;
+
+            // ★超重要：paddingを入れても88pxの正円を絶対維持する設定
+            box-sizing: border-box;
+
+            border-radius: 50%;
+            background-color: var(--color-main);
+            color: var(--color-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            // STEPの文字が入るスペースを空け、数字を下に押し込む
+            padding-top: 18px;
+
+            font-family: "Futura", "Futura Medium", "Roboto", sans-serif;
+            font-size: 32px;
+            letter-spacing: 0;
+            line-height: 1;
+            z-index: 2;
+
+            @include mq(xl) {
+               width: 64px;
+               height: 64px;
+               font-size: 24px;
+               padding-top: 12px;
+            }
+
+            @include mq(md) {
+               width: 48px;
+               height: 48px;
+               font-size: 18px;
+               padding-top: 8px;
+            }
+         }
+
+         // 2. "STEP"の文字 (::after)
+         &::after {
+            content: "STEP";
+            position: absolute;
+            top: 16px; // 円の上部に配置
+            left: 0;
+            width: 88px;
+            text-align: center;
+            color: var(--color-white);
+            font-family: "Futura", "Futura Medium", "Roboto", sans-serif;
+            font-size: 12px;
+            letter-spacing: 0;
+            line-height: 1;
+            z-index: 3;
+
+            @include mq(xl) {
+               width: 64px;
+               top: 12px;
+               font-size: 10px;
+            }
+
+            @include mq(md) {
+               width: 48px;
+               top: 10px;
+               font-size: 8px;
+            }
+         }
+
+         // 最後のアイテム（04）のみゴールドグラデーション
+         &:last-child::before {
+            background: var(--accent-gold-gradient);
+         }
+
+         // =============================================
+         // メディアブロック (画像 + テキスト)
+         // =============================================
+         .step-content {
+            display: flex;
+            padding-top: var(--section-py);
+            gap: var(--section-px); // 64px
+
+            @include mq(xl) {
+               flex-direction: column;
+               padding-top: 0;
+               gap: var(--space-m);
+            }
+
+            .step-img-area {
+               flex-basis: 430px;
+               flex-shrink: 0;
+
+               @include mq(xl) {
+                  flex-basis: auto;
+                  width: 100%;
+               }
+
+               img {
+                  width: 100%;
+                  height: auto;
+                  object-fit: contain;
+                  aspect-ratio: 4 / 3;
+               }
+            }
+
+            .step-text-area {
+               flex: 1;
+               justify-content: center; // 縦方向の中央寄せだけ維持
+
+               // ★追加：グループ化したタイトルエリア内は専用の小さな隙間で制御
+               .step-title-area {
+                  display: flex;
+                  flex-direction: column;
+                  gap: calc(var(--space-s) / 2); // 8px
+
+                  @include mq(md) {
+                     gap: 0;
+                  }
+               }
+
+               .step-label {
+                  font-size: var(--fz-body);
+                  letter-spacing: 0;
+                  font-weight: bold;
+                  background: var(--accent-gold-gradient);
+                  -webkit-background-clip: text;
+                  -webkit-text-fill-color: transparent;
+                  display: inline-block;
+               }
+
+               .step-title {
+                  font-size: var(--fz-bridge);
+                  font-weight: bold;
+                  line-height: 1.4;
+                  letter-spacing: 0;
+               }
+
+               .step-check-list {
+                  list-style: none;
+                  padding: 0;
+                  display: flex;
+                  flex-direction: column;
+                  gap: calc(var(--space-s) / 2);
+
+                  li {
+                     position: relative;
+                     padding-left: 28px;
+                     font-size: var(--fz-body);
+                     font-weight: bold;
+
+                     &::before {
+                        content: "\e86c";
+                        font-family: "Material Symbols Outlined";
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        font-size: 20px;
+                        color: var(--color-main);
+                     }
+                  }
+               }
+
+               // 強調コピーボックス
+               .step-msg-box {
+                  background-color: var(--color-bg);
+                  padding: var(--space-sm) var(--space-m);
+
+                  // ★修正：ご指示通り fz-sub-copy を適用
+                  font-size: var(--fz-sub-copy);
+
+                  font-weight: bold;
+                  text-align: center;
+                  line-height: 1.6;
+
+                  @include mq(md) {
+                     padding: 16px 0;
+                     border-top: 1px solid var(--color-main);
+                     border-bottom: 1px solid var(--color-main);
+                  }
+
+                  &.is-main {
+                     background-color: var(--color-main);
+                     color: var(--color-white);
+                  }
+               }
+            }
+         }
+      }
+   }
+}

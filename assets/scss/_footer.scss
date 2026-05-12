@@ -1,0 +1,90 @@
+@use "lp-style" as *;
+
+/* =============================================
+   SECTION 18 | Footer (フッター)
+   ============================================= */
+
+.lp-footer {
+   position: relative;
+   z-index: 10;
+   // フッターは少し余白を狭めに設定してスッキリさせます
+   padding: var(--space-l) var(--section-px);
+   text-align: center;
+   @include mq(md) {
+      padding: var(--space-m) var(--space-s) 128px;
+   }
+
+   .lp-footer-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-m); // 32px
+      @include mq(md) {
+         gap: var(--space-sm);
+      }
+   }
+
+   // 運営会社情報
+   .footer-company {
+      font-size: var(--fz-body); // 16px
+   }
+
+   // リンク群
+   .footer-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      @include mq(md) {
+         flex-direction: column;
+         gap: var(--space-s);
+      }
+
+      .footer-link-item {
+         position: relative;
+         padding: 0 var(--space-sm); // 24px
+         @include mq(md) {
+            padding: 0;
+         }
+
+         // リンク間の縦線（セパレーター）
+         &:not(:last-child)::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1px;
+            height: 16px; // 縦線の長さ
+            background-color: var(--color-white);
+            opacity: 0.5; // 少し薄くして上品に
+            @include mq(md) {
+               display: none;
+            }
+         }
+
+         a {
+            color: var(--color-white);
+            text-decoration: none;
+            font-size: var(--fz-body);
+            transition: opacity 0.3s ease;
+
+            &:hover {
+               opacity: 0.7;
+               text-decoration: underline;
+            }
+         }
+      }
+   }
+
+   // コピーライト
+   .footer-copyright {
+      font-size: 12px; // 指示通り12pxで固定
+      font-family: var(--font-serif);
+      margin-top: var(--space-s); // 少しだけ余白を追加
+      opacity: 0.6; // 目立ちすぎないように少し透過
+      letter-spacing: 0.05em;
+   }
+}

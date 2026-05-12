@@ -1,0 +1,255 @@
+@use "lp-style" as *;
+
+/* =============================================
+   SECTION 03 | プロブレム ブリッジ
+   ============================================= */
+
+.lp-onetime-wrap {
+   .problem-bridge-section {
+      padding-bottom: calc(var(--section-py) + 64px);
+   }
+}
+
+.problem-bridge-section {
+   position: relative;
+   background-color: var(--color-main);
+   color: var(--color-white);
+
+   // V字の切り欠き（1440:96比率）
+   clip-path: polygon(0 0, 100% 0, 100% calc(100% - 96px), 50% 100%, 0 calc(100% - 96px));
+
+   // ---------------------------------------------
+   // 1. それでも タイトルエリア（擬似要素で装飾）
+   // ---------------------------------------------
+   .bridge-title-area {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .bridge-title {
+         font-size: var(--fz-title);
+         font-family: var(--font-serif) !important;
+         font-weight: bold;
+         color: var(--color-white);
+         letter-spacing: 0.1em;
+         margin: 0 160px; // 左右アイコン分のスペースを確保
+         line-height: 1;
+
+         @include mq(md) {
+            margin: 0 auto; // 左右アイコン分のスペースを確保
+         }
+      }
+
+      // 共通のドットアイコン設定
+      &::before,
+      &::after {
+         content: "";
+         position: absolute;
+         top: 50%;
+         width: 120px;
+         height: 32px; // SVGの高さに合わせて調整
+         background: url("../images/problem/problem_dots_border.svg") no-repeat center / contain;
+
+         @include mq(sm) {
+            width: 72px;
+            height: 100%;
+         }
+      }
+
+      // 左側（反転）
+      &::before {
+         left: 50%;
+         margin-left: -320px; // 中央から左へ配置
+         transform: translateY(-50%);
+
+         @include mq(sm) {
+            margin-left: -180px; // 中央から左へ配置
+         }
+      }
+
+      // 右側
+      &::after {
+         right: 50%;
+         margin-right: -320px; // 中央から右へ配置
+         transform: translateY(-50%) scaleX(-1);
+
+         @include mq(sm) {
+            margin-right: -180px; // 中央から右へ配置
+         }
+      }
+   }
+
+   // ---------------------------------------------
+   // 2. 画像＋吹き出しエリア（背景画像化）
+   // ---------------------------------------------
+   .bridge-image-area {
+      position: relative;
+      max-width: 1024px;
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      @include mq(md) {
+         flex-direction: column;
+         gap: 12px;
+         height: 580px;
+      }
+
+      @include mq(sm) {
+         height: 520px;
+      }
+
+      .bridge-image-item {
+         display: flex;
+         justify-content: center;
+
+         // 上の吹き出しエリア
+         &.bubble-area {
+            width: 100%;
+            gap: var(--space-s);
+            margin-bottom: calc(var(--space-l) * -1);
+         }
+
+         // 下の2枚画像のエリア
+         &.main-image-area {
+            width: 80%;
+            gap: var(--space-l);
+            opacity: 0.8;
+            mix-blend-mode: screen;
+
+            @include mq(md) {
+               position: absolute;
+               width: 100%;
+            }
+
+            .main-image {
+               position: relative;
+               flex: 1;
+               width: 70%;
+               height: auto;
+               object-fit: cover;
+               border-radius: var(--border-radius);
+
+               @include mq(md) {
+                  &:first-child {
+                     top: 190px;
+                     left: 70%;
+                  }
+
+                  &:last-child {
+                     top: 270px;
+                     right: 70%;
+                  }
+               }
+            }
+         }
+      }
+
+      // 吹き出し共通設定
+      .bubble-item {
+         position: relative;
+         z-index: 2;
+         display: block;
+         background-repeat: no-repeat;
+         background-position: center;
+         background-size: contain;
+         filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.15));
+      }
+
+      // 個別配置と画像指定
+      .bubble-01 {
+         top: 30px;
+         width: 38%;
+         aspect-ratio: 353 / 214;
+         background-image: url("../images/problem/problem_bubble_01.svg");
+      }
+      .bubble-02 {
+         top: 0;
+         width: 36%;
+         aspect-ratio: 346 / 207;
+         background-image: url("../images/problem/problem_bubble_02.svg");
+      }
+      .bubble-03 {
+         top: 50px;
+         right: 12px;
+         width: 35%;
+         aspect-ratio: 346 / 228;
+         background-image: url("../images/problem/problem_bubble_03.svg");
+      }
+
+      @include mq(md) {
+         // PC時に非表示
+         .bubble-01,
+         .bubble-02,
+         .bubble-03 {
+            display: none;
+         }
+      }
+
+      // SP時に表示
+      .bubble-sp {
+         display: none;
+         @include mq(md) {
+            display: block;
+            max-width: 400px;
+            width: 100%;
+            margin: 48px auto 0;
+            aspect-ratio: 604/565;
+            background-image: url("../images/problem/problem_bubble_sp.svg");
+         }
+      }
+   }
+
+   // ---------------------------------------------
+   // 3. 後半テキストエリア（擬似要素でブラー背景）
+   // ---------------------------------------------
+   .bridge-text-area {
+      position: relative;
+      text-align: center;
+      padding: 0;
+
+      // 親要素に擬似要素でブラー背景を配置
+      &::before {
+         content: "";
+         position: absolute;
+         top: 50%;
+         left: 50%;
+         width: 100%;
+         height: 85vh;
+         transform: translate(-50%, -50%);
+         background: url("../images/problem/problem_bg_blur.webp") no-repeat center / contain;
+         mix-blend-mode: multiply;
+         z-index: 1;
+         pointer-events: none;
+      }
+
+      .text-content {
+         position: relative;
+         z-index: 2;
+      }
+
+      .catch-copy {
+         font-size: var(--fz-heading);
+         font-weight: bold;
+         font-family: var(--font-serif) !important;
+         letter-spacing: var(--letter-spacing-heading);
+         line-height: 1.6;
+         margin-bottom: var(--space-l);
+      }
+
+      .description {
+         font-size: var(--fz-lead);
+         letter-spacing: var(--letter-spacing-text);
+         line-height: 2;
+         margin: 0;
+      }
+   }
+
+   @include mq(md) {
+      // SP時：V字の傾斜を緩やかに（96px → 32px）
+      clip-path: polygon(0 0, 100% 0, 100% calc(100% - 32px), 50% 100%, 0 calc(100% - 32px));
+   }
+}

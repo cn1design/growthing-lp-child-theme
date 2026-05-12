@@ -1,0 +1,247 @@
+@use "lp-style" as *;
+/* =============================================
+   SECTION 16 | Present (特典・プレゼント)
+   ============================================= */
+
+.present-section {
+   position: relative;
+   z-index: 10;
+   overflow: hidden; // 右側の透かし文字のはみ出しをカット
+
+   // ---------------------------------------------
+   // タイトルボックスエリア
+   // ---------------------------------------------
+
+   .lp-sec-header-bg.is-present {
+      top: 32%;
+      right: 56px;
+
+      @include mq(xl) {
+         top: 23%;
+         right: 56px;
+      }
+
+      @include mq(sm) {
+         display: none;
+      }
+   }
+
+   .present-title-box {
+      position: relative;
+      background-color: var(--color-sub);
+      padding: var(--space-sm) var(--space-m); // 上下24px 左右32px
+      border-radius: var(--border-radius);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      // 箱自体を中央寄せ（親がflex-colのため）
+      align-self: center;
+      z-index: 2;
+      @include mq(xl) {
+         padding: var(--space-m) var(--space-s);
+         flex-direction: column;
+         width: 100%;
+      }
+
+      // 左側にはみ出すプレゼントアイコン
+      .present-icon {
+         position: absolute;
+         width: 136px;
+         height: 136px;
+         left: -128px;
+         top: 50%;
+         transform: translateY(-50%) rotate(-15deg);
+         z-index: -1;
+         opacity: 0.5;
+         mix-blend-mode: overlay;
+         @include mq(xl) {
+            position: relative;
+            left: 0;
+            transform: none;
+            width: 80px;
+            height: 80px;
+            margin-bottom: var(--space-s);
+         }
+      }
+
+      .present-title {
+         display: flex;
+         align-items: center;
+         gap: var(--space-m); // テキストと線の間隔 32px
+         font-weight: bold;
+         color: var(--color-white);
+         font-size: var(--fz-heading);
+         @include mq(xl) {
+            flex-direction: column;
+            gap: var(--space-s);
+         }
+         @include mq(md) {
+            gap: calc(var(--space-s) / 2);
+         }
+
+         span {
+            font-family: var(--font-serif);
+         }
+
+         .divider {
+            width: 1px;
+            // flex-stretchで親の高さに合わせつつ、上下に少し余白を持たせる
+            height: 48px;
+            background-color: var(--color-white);
+            @include mq(xl) {
+               width: 24px;
+               height: 1px;
+            }
+         }
+      }
+   }
+
+   // ---------------------------------------------
+   // 特典リストエリア
+   // ---------------------------------------------
+   .present-list {
+      counter-reset: present-counter; // 特典の番号を自動カウント
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      z-index: 2;
+
+      .present-item {
+         display: flex;
+         align-items: center;
+         gap: var(--space-m); // アイコンと付箋のギャップ 32px
+         @include mq(xl) {
+            position: relative;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: var(--space-s);
+         }
+
+         .item-icon,
+         .item-banner {
+            box-shadow: var(--drop-shadow);
+         }
+
+         // 左側のアイコン
+         .item-icon {
+            width: 96px;
+            height: 96px;
+            flex-shrink: 0;
+            background-color: var(--color-white); // 白い丸背景
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            img {
+               width: 70%;
+               height: 70%;
+               object-fit: contain;
+            }
+            @include mq(xl) {
+               position: absolute;
+               z-index: 1;
+               top: -16px;
+               left: 16px;
+               width: 128px;
+               height: 128px;
+            }
+            @include mq(md) {
+               width: 80px;
+               height: 80px;
+            }
+         }
+
+         // 右側の付箋バナー
+         .item-banner {
+            flex: 1;
+            background-color: var(--color-white);
+            display: flex;
+            align-items: stretch; // 子要素の高さを揃える
+            min-height: 80px;
+            border-radius: 4px;
+            // 三角形がはみ出すためoverflow: visibleにする
+            overflow: visible;
+            @include mq(xl) {
+               width: 100%;
+               flex-direction: column;
+            }
+
+            // バナー左側のラベル「特典1」＋ 三角形
+            .banner-label {
+               position: relative;
+               background-color: var(--color-sub);
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               padding: 0 var(--space-m); // 左右32px
+               color: var(--color-accent-yellow);
+               font-size: var(--fz-lead); // 24px
+               font-family: var(--font-serif);
+               font-weight: bold;
+               border-radius: 4px 0 0 4px;
+               @include mq(xl) {
+                  border-radius: 4px 4px 0 0;
+                  padding: 8px;
+               }
+
+               // 自動ナンバリング
+               &::before {
+                  counter-increment: present-counter;
+                  content: "特典" counter(present-counter);
+               }
+
+               // 右側に飛び出る三角形
+               &::after {
+                  content: "";
+                  position: absolute;
+                  top: 0;
+                  right: -24px; // 三角形の幅分はみ出す
+                  width: 24px;
+                  height: 100%;
+                  background-color: var(--color-sub);
+                  // CSSで三角形を作るクリップパス
+                  clip-path: polygon(0 0, 100% 50%, 0 100%);
+                  z-index: 2;
+                  @include mq(xl) {
+                     top: auto;
+                     bottom: -16px;
+                     right: 50%;
+                     transform: translateX(50%);
+                     width: 32px;
+                     height: 16px;
+                     clip-path: polygon(0 0, 100% 0, 50% 100%);
+                  }
+               }
+            }
+
+            // バナー右側のテキスト
+            .banner-text {
+               display: inline-block;
+               // 三角形(24px) + 余白(32px) = 56px のパディングを確保
+               padding: 16px var(--space-m) 16px 56px;
+               font-size: var(--fz-bridge); // 32px
+               font-weight: bold;
+               color: var(--color-main); // 基本はネイビー
+
+               // 指示のイレギュラー設定
+               letter-spacing: 1px;
+               @include mq(xl) {
+                  padding: 32px 16px 16px;
+                  text-align: center;
+               }
+            }
+         }
+      }
+   }
+
+   // 共通CTAユニット 中央寄せ
+   .common-cta-unit {
+      margin: 0 auto;
+
+      // マイクロコピーを非表示
+      .hero-micro-copy {
+         display: none;
+      }
+   }
+}

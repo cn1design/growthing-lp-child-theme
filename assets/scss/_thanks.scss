@@ -1,0 +1,305 @@
+@use "lp-style" as *;
+
+/* =============================================
+   サンクスページ専用スタイル
+   ============================================= */
+
+// ゴールドカラー定義（FVの月桂樹バッジから抽出）
+$gold-gradient: linear-gradient(135deg, #c9a43e 0%, #8b6314 100%);
+$gold-gradient-h: linear-gradient(90deg, #a37d0e 0%, #70580e 100%);
+$gold-color: #b8922a;
+
+// =============================================
+// サンクスセクション本体
+// =============================================
+.thanks-section {
+    position: relative;
+    overflow: hidden;
+    background-color: transparent; // bg-navyのベタ塗りをオーバーライド
+
+    // =============================================
+    // 背景画像（FVと同一素材 + ダークオーバーレイ）
+    // =============================================
+    .thanks-bg-image {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+
+            @include mq(sm) {
+                height: 460px;
+            }
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                180deg,
+                rgba(16, 30, 55, 0.93) 0%,
+                rgba(20, 45, 85, 0.9) 50%,
+                rgba(16, 30, 55, 0.95) 100%
+            );
+        }
+
+        @include mq(sm) {
+            &::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(
+                    180deg,
+                    rgba(16, 30, 55, 0) 0%,
+                    rgba(20, 45, 85, 0) 360px,
+                    rgba(20, 45, 85, 1) 460px,
+                    rgba(16, 30, 55, 1) 100%
+                );
+            }
+        }
+    }
+
+    > .lp-container {
+        position: relative;
+        z-index: 1;
+    }
+
+    // =============================================
+    // コンテンツ整列
+    // =============================================
+    .thanks-content-inner {
+        align-items: center;
+        text-align: center;
+    }
+
+    // =============================================
+    // チェックマークアイコン（ゴールドグラデーション）
+    // =============================================
+    .thanks-icon-wrap {
+        width: 72px;
+        height: 72px;
+        background: $gold-gradient;
+        border-radius: 50%; // アイコン自体は円形を維持
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow:
+            0 0 0 8px rgba(180, 140, 40, 0.12),
+            0 8px 32px rgba(163, 125, 14, 0.35);
+    }
+
+    // =============================================
+    // ヘッダー（PC折り返し防止：max-width 800px）
+    // =============================================
+    .thanks-header {
+        max-width: 800px;
+        width: 100%;
+        margin-inline: auto;
+
+        .thanks-title {
+            font-family: var(--font-serif);
+            font-size: var(--fz-heading);
+            font-weight: bold;
+            line-height: 1.6;
+            letter-spacing: var(--letter-spacing-heading);
+            color: var(--color-white);
+            margin-bottom: 0;
+
+            &::after {
+                content: "";
+                display: block;
+                width: 40px;
+                height: 2px;
+                background: $gold-gradient-h;
+                margin: var(--space-sm) auto 0;
+            }
+        }
+
+        .thanks-lead {
+            font-size: var(--fz-sub-copy);
+            line-height: 2;
+            letter-spacing: var(--letter-spacing-text);
+            color: rgba(255, 255, 255, 0.82);
+            margin-top: var(--space-sm);
+
+            @include mq(sm) {
+                font-size: var(--fz-body);
+                text-align: left;
+            }
+        }
+    }
+
+    // =============================================
+    // 今後の流れボックス（角丸なし・border-top なし）
+    // =============================================
+    .thanks-steps-box {
+        width: 100%;
+        max-width: 640px;
+        border-radius: 0; // シャープなデザイン（LP本編と統一）
+        padding: var(--space-l);
+        box-sizing: border-box;
+        --curr-text: var(--color-main);
+        box-shadow: 0 12px 48px rgba(0, 0, 0, 0.25);
+
+        @include mq(sm) {
+            padding: var(--space-m) var(--space-sm);
+        }
+
+        // 「今後の流れ」見出し + ゴールドボーダー
+        .thanks-steps-title {
+            font-family: var(--font-serif);
+            font-size: var(--fz-sub-copy);
+            font-weight: bold;
+            letter-spacing: var(--letter-spacing-text);
+            color: var(--color-main);
+            margin-bottom: var(--space-sm);
+            text-align: center;
+
+            &::after {
+                content: "";
+                display: block;
+                width: 32px;
+                height: 2px;
+                background: $gold-gradient-h;
+                margin: 10px auto 0;
+            }
+        }
+
+        .thanks-steps-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-m);
+        }
+
+        .thanks-step-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-sm);
+            text-align: left;
+
+            &:not(:last-child) {
+                padding-bottom: var(--space-m);
+                border-bottom: 1px solid rgba(30, 58, 95, 0.1);
+            }
+        }
+
+        // ラベル＋アイコンを縦に積むコンテナ
+        .thanks-step-label {
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center; // ラベル・アイコンともにセンター揃え
+            gap: 8px;
+
+            @include mq(sm) {
+                gap: 16px;
+            }
+        }
+
+        // STEPラベル（ゴールドグラデーション・角丸なし）
+        .thanks-step-num {
+            font-size: var(--fz-small);
+            font-weight: bold;
+            font-family: var(--font-roboto);
+            letter-spacing: 2px;
+            color: var(--color-white);
+            background: $gold-gradient-h;
+            border-radius: 0; // シャープ
+            padding: 4px 10px;
+            white-space: nowrap;
+            text-align: center;
+        }
+
+        // アイコン（STEPラベル直下・センター配置）
+        .thanks-step-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            mix-blend-mode: darken;
+
+            img {
+                height: 48px;
+                width: auto;
+                display: block;
+            }
+        }
+
+        .thanks-step-body {
+            flex: 1;
+
+            strong {
+                display: block;
+                font-size: var(--fz-body);
+                font-weight: bold;
+                color: var(--color-main);
+                margin-bottom: 6px;
+                line-height: 1.5;
+            }
+
+            p {
+                font-size: var(--fz-small);
+                color: var(--color-main);
+                line-height: 1.8;
+                margin: 0;
+            }
+        }
+    }
+
+    // =============================================
+    // ご案内メッセージボックス
+    // =============================================
+    .thanks-guide-box {
+        width: 100%;
+        max-width: 640px;
+        border-left: 3px solid $gold-color;
+        border-radius: 0; // シャープ
+        background: rgba(255, 255, 255, 0.06);
+        padding: var(--space-sm) var(--space-m);
+        box-sizing: border-box;
+        text-align: left;
+
+        @include mq(sm) {
+            padding: var(--space-sm);
+        }
+
+        .thanks-guide-label {
+            font-family: var(--font-roboto);
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: $gold-color;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: var(--fz-small);
+            color: rgba(255, 255, 255, 0.78);
+            line-height: 1.8;
+            margin: 0;
+
+            &:not(:last-child) {
+                margin-bottom: 4px;
+            }
+        }
+    }
+
+    // =============================================
+    // 注意書き
+    // =============================================
+    .thanks-note {
+        font-size: var(--fz-small);
+        color: rgba(255, 255, 255, 0.45);
+        line-height: 1.8;
+        letter-spacing: var(--letter-spacing-text);
+        text-align: center;
+    }
+}

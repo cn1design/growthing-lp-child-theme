@@ -1,0 +1,396 @@
+@use "lp-style" as *;
+
+/* =============================================
+   SECTION 07 | エビデンス（証拠・武器）
+   ============================================= */
+
+.evidence-section {
+    position: relative;
+    z-index: 1; // Solutionセクションの下に潜り込ませる
+
+    &::before {
+        content: "";
+        position: absolute;
+        bottom: 100%; // 本体の上にピタッと乗せる
+        left: 0;
+        width: 100%;
+        aspect-ratio: 1440 / 268;
+        background-color: var(--color-main); // ネイビー色
+
+        // 右上が頂点(100% 0)、左下が底辺左(0 100%)、右下が底辺右(100% 100%)
+        clip-path: polygon(0 100%, 100% 100%, 100% 0);
+        z-index: -1; // 念のため背面へ
+
+        @include mq(md) {
+            clip-path: polygon(0 100%, 100% 100%, 100% 5vw);
+        }
+    }
+
+    @include mq(md) {
+        padding-top: calc(var(--section-py) + 120px);
+    }
+
+    // セクション内の大きなブロック間は一律のgapで管理
+    .evidence-container-inner {
+        display: flex;
+        flex-direction: column;
+        gap: 120px; // セクション内の大ブロック間は少し広め（任意調整）
+
+        @include mq(md) {
+            gap: 64px;
+        }
+    }
+
+    // ---------------------------------------------
+    // 1. ヘッダーブロック
+    // ---------------------------------------------
+    .evidence-header {
+        // 見出し・リード文はlp-sec-headerで管理。
+
+        @include mq(md) {
+            .header-title {
+                font-size: 24px;
+            }
+        }
+    }
+
+    // ---------------------------------------------
+    // 2. 「2つの武器」カードブロック
+    // ---------------------------------------------
+    .weapon-cards-wrap {
+        display: flex;
+        padding: var(--section-px);
+        gap: var(--space-l); // 64px
+        background-color: var(--color-bg);
+
+        @include mq(xl) {
+            flex-direction: column;
+        }
+
+        @include mq(md) {
+            padding: 0;
+            background-color: transparent;
+        }
+
+        .weapon-card {
+            flex: 1;
+            position: relative;
+            background-color: var(--color-white);
+            color: var(--color-main);
+            padding: var(--space-xl) calc(var(--space-m) * 1.5) 40px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--blur-shadow);
+
+            @include mq(md) {
+                padding: var(--space-xl) var(--space-m) 40px;
+            }
+
+            // 上部にはみ出すアイコン画像
+            .card-icon {
+                position: absolute;
+                top: -40px; // はみ出させる
+                right: 40px;
+                width: 128px;
+                height: 128px;
+                background-color: var(--color-bg);
+                object-fit: contain;
+                border-radius: var(--border-radius);
+                box-shadow: var(--blur-shadow);
+
+                @include mq(xl) {
+                    top: -16px;
+                    width: 160px;
+                    height: 160px;
+                }
+                @include mq(md) {
+                    width: 108px;
+                    height: 108px;
+                }
+                @include mq(sm) {
+                    right: -8px;
+                }
+            }
+
+            .card-sub-title {
+                font-size: 14px;
+                font-weight: bold;
+                background: var(--accent-gold-gradient);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                display: inline-block;
+            }
+
+            .card-title {
+                font-size: 24px;
+                font-family: var(--font-serif);
+                font-weight: bold;
+                line-height: 1.5;
+                display: flex;
+                align-items: stretch;
+
+                // 左の紺色縦線
+                &::before {
+                    content: "";
+                    width: 4px;
+                    background-color: var(--color-main);
+                    margin-right: 12px;
+                }
+            }
+
+            .card-badge {
+                display: inline-block;
+                align-self: flex-start;
+                background-color: var(--color-main);
+                color: var(--color-white);
+                font-size: var(--fz-body);
+                font-weight: bold;
+                padding: 4px 12px;
+                border-radius: 4px;
+            }
+
+            .card-text {
+                font-size: 16px;
+                line-height: 1.8;
+
+                @include mq(sm) {
+                    line-height: 1.6;
+                }
+            }
+
+            // チェックリスト
+            .card-check-list {
+                list-style: none;
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 12px; // li間の余白
+                border-top: 1px solid #ddd; // 上部の区切り線
+                padding-top: 24px;
+
+                li {
+                    position: relative;
+                    padding-left: 28px;
+                    font-size: 16px;
+                    font-weight: bold;
+                    line-height: 1.4;
+
+                    // Google Fonts チェックマーク
+                    &::before {
+                        content: "\e86c"; // check_circle
+                        font-family: "Material Symbols Outlined";
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        font-size: 20px;
+                        color: var(--color-main);
+                    }
+                }
+            }
+        }
+    }
+
+    // ---------------------------------------------
+    // 3. タブ切り替え（作例）ブロック
+    // ---------------------------------------------
+    .ai-examples-wrap {
+        display: flex;
+        flex-direction: column;
+
+        .examples-title {
+            text-align: center;
+            font-size: var(--fz-heading);
+            font-weight: bold;
+        }
+
+        // タブボタンエリア
+        .tab-buttons {
+            display: flex;
+
+            @include mq(md) {
+                flex-wrap: wrap;
+            }
+
+            @include mq(sm) {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px 8px;
+                flex-wrap: nowrap;
+            }
+
+            .tab-btn {
+                flex: 1;
+                position: relative;
+                background-color: rgba(255, 255, 255, 0.2); // 非アクティブ状態
+                color: var(--color-white);
+                border: none;
+                padding: 16px 8px;
+                font-size: 18px;
+                font-weight: bold;
+                cursor: pointer;
+                transition:
+                    background-color 0.3s,
+                    color 0.3s; // 背景と文字色の変化を滑らかに
+                text-align: center;
+                border-radius: var(--border-radius); // ★画像に合わせて角丸を追加
+
+                @include mq(md) {
+                    width: 48%;
+                    flex: none;
+                }
+
+                @include mq(sm) {
+                    width: 100%;
+                    padding: 12px 4px;
+                    font-size: 14px;
+                }
+
+                //しっぽのデフォルト状態（上に隠して縮小しておく）
+                &::after {
+                    content: "";
+                    position: absolute;
+                    bottom: -10px; // 最終的な位置
+                    left: 50%;
+                    width: 20px;
+                    height: 11px;
+                    background-color: var(--color-white);
+                    clip-path: polygon(0 0, 100% 0, 50% 100%);
+
+                    // アニメーションの初期値（上に10pxズラし、サイズを0にして見えなくする）
+                    transform: translateX(-50%) translateY(-10px) scale(0);
+                    opacity: 0;
+
+                    // 「ピュッ」と出る心地よいイージング（Back ease-outのような弾む動き）
+                    transition:
+                        transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                        opacity 0.2s ease-out;
+                }
+
+                // アクティブ状態
+                &.is-active {
+                    background-color: var(--color-white);
+                    color: var(--color-main);
+
+                    // ★ しっぽを表示して所定の位置へスライド＆拡大
+                    &::after {
+                        transform: translateX(-50%) translateY(0) scale(1);
+                        opacity: 1;
+                    }
+                }
+            }
+        }
+
+        // タブコンテンツエリア
+        .tab-content-box {
+            padding: var(--space-m); // 40px
+            border-radius: var(--border-radius); // 角丸
+            display: flex;
+            align-items: center;
+
+            @include mq(md) {
+                flex-direction: column;
+            }
+            .image-bg-white {
+                width: 50%;
+
+                @include mq(md) {
+                    width: 100%;
+                }
+                .content-image {
+                    width: 100%;
+                    object-fit: contain;
+                    mix-blend-mode: darken;
+                }
+            }
+
+            .content-text-area {
+                width: 50%;
+                display: flex;
+                flex-direction: column;
+
+                @include mq(md) {
+                    width: 100%;
+                }
+
+                .content-title {
+                    font-size: 24px;
+                    font-weight: bold;
+                }
+
+                .content-check-list {
+                    list-style: none;
+                    padding: 0;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 12px;
+
+                    li {
+                        position: relative;
+                        padding-left: 28px;
+                        font-size: 16px;
+                        font-weight: bold;
+
+                        &::before {
+                            content: "\e86c";
+                            font-family: "Material Symbols Outlined";
+                            position: absolute;
+                            left: 0;
+                            top: 0;
+                            font-size: 20px;
+                            color: var(--color-main);
+                        }
+                    }
+                }
+
+                .content-desc {
+                    font-size: 14px;
+                    line-height: 1.6;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+
+    // ---------------------------------------------
+    // 4. 下部ブロック
+    // ---------------------------------------------
+    .evidence-bottom-wrap {
+        display: flex;
+        gap: var(--space-l);
+        align-items: center;
+
+        @include mq(lg) {
+            flex-direction: column;
+            max-width: 425px;
+            margin: 0 auto;
+        }
+
+        .bottom-text {
+            width: 50%;
+            line-height: 2.4;
+            font-size: var(--fz-sub-copy);
+            font-weight: bold;
+            font-family: var(--font-serif);
+
+            @include mq(lg) {
+                width: 100%;
+            }
+
+            p:not(:last-child) {
+                margin-bottom: var(--space-m);
+            }
+        }
+
+        .bottom-image {
+            display: block;
+            width: 50%;
+            aspect-ratio: 3 / 4; // 動画の縦長比率に合わせる
+            object-fit: cover;
+            border-radius: var(--border-radius);
+            opacity: 0.5;
+
+            @include mq(lg) {
+                width: 100%;
+            }
+        }
+    }
+}

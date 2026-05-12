@@ -1,0 +1,254 @@
+@use "lp-style" as *;
+/* =============================================
+   SECTION 10 | Case (事例)
+   ============================================= */
+
+.case-section {
+   position: relative;
+   z-index: 10;
+
+   &::before {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      // デザインカンプ比率で角度を固定
+      aspect-ratio: 1440 / 268;
+      // 次のセクションの色（var(--color-bg)）で塗りつぶす
+      background-color: var(--color-bg);
+      // 右上が頂点の三角形（これでネイビー背景が斜めに切れて見える）
+      clip-path: polygon(0 100%, 100% 100%, 100% 0);
+
+      @include mq(md) {
+         clip-path: polygon(0 100%, 100% 100%, 100% 5vw);
+      }
+   }
+
+   .case-container-inner {
+      position: relative;
+      z-index: 2;
+   }
+
+   // ---------------------------------------------
+   // 1. カードリストエリア
+   // ---------------------------------------------
+   .case-cards-wrap {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr); // PC: 強制的に3等分の枠を作る
+      justify-content: center;
+      gap: var(--space-l); // 掟遵守
+
+      @include mq(xl) {
+         grid-template-columns: repeat(2, 1fr);
+      }
+
+      @include mq(md) {
+         grid-template-columns: 1fr;
+      }
+
+      // 各カード
+      .case-card {
+         flex: 1;
+         width: auto;
+         position: relative;
+         z-index: 1;
+         padding: var(--space-m) 40px; // 上下32px、左右40px
+         box-shadow: var(--drop-shadow); // 指定のドロップシャドウ
+         // Flexboxで上下のブロックを離す
+         display: flex;
+         flex-direction: column;
+         justify-content: space-between;
+         min-height: 480px; // 上下の空間(220px程度)を確保するための最小高さ
+
+         @include mq(xl) {
+            min-height: auto;
+            padding: var(--space-m) var(--space-s);
+            gap: 64px;
+
+            &:nth-child(3) {
+               grid-column: 1 / -1; // ★親のGrid幅を端から端まで「全幅ぶち抜き」で確保する
+               margin: 0 auto; // ★確保した全幅の中で、カード自身を中央寄せ
+               width: calc(50% - (var(--space-l) / 2)); // ★カードの横幅は上2枚とぴったり同じサイズを維持
+            }
+         }
+
+         @include mq(md) {
+            &:nth-child(3) {
+               grid-column: auto;
+               margin-inline: 0;
+               width: auto;
+            }
+         }
+
+         // 背景画像（乗算処理）
+         .card-bg-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            mix-blend-mode: soft-light;
+            z-index: -1;
+            pointer-events: none;
+
+            @include mq(sm) {
+               object-position: bottom;
+            }
+         }
+
+         &:nth-child(3) {
+            .card-bg-image {
+               object-position: center -30px;
+            }
+         }
+
+         // --- 上部ブロック ---
+         .case-card-top {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: calc(var(--space-s) / 2);
+
+            .case-label {
+               display: inline-block;
+               // ★明示的に白を指定
+               border: 1px solid var(--color-white);
+               color: var(--color-white);
+               padding: 4px 8px;
+               font-size: var(--fz-small);
+               font-weight: bold;
+               letter-spacing: 2px;
+            }
+
+            .case-meta {
+               // ★明示的に白を指定
+               color: var(--color-white);
+               font-size: var(--fz-small);
+               font-weight: bold;
+            }
+         }
+
+         // --- 下部ブロック ---
+         .case-card-bottom {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-s);
+
+            .case-title {
+               color: var(--color-white); // 念のためタイトルも白に
+               font-size: 1.125rem;
+               font-weight: bold;
+               line-height: 1.6;
+               letter-spacing: 1px;
+            }
+
+            .case-prev-job {
+               border-top: 1px solid var(--color-white);
+               border-bottom: 1px solid var(--color-white);
+               color: var(--color-white);
+               padding: calc(var(--space-s) / 2) 0;
+               font-size: var(--fz-small);
+               font-weight: bold;
+
+               // ★ Flexboxで横並び・中央揃えにする
+               display: flex;
+               justify-content: center;
+               align-items: center;
+               gap: 2em; // 2つのspanの間の距離（全角2文字分）
+
+               span:last-child {
+                  position: relative;
+
+                  // ★ 2つ目のspanの左側に擬似要素で縦線を引く
+                  &::before {
+                     content: "";
+                     position: absolute;
+                     top: 50%;
+                     left: -1em; // gapのちょうど真ん中に配置
+                     transform: translateY(-50%); // 縦方向の中央揃え
+                     width: 1px;
+                     height: 1em; // 文字の高さに合わせる（100%だと余白まで伸びてしまうため）
+                     background-color: var(--color-white);
+                     opacity: 0.6; // 少し透過させると上品になります
+                  }
+               }
+            }
+
+            // 現職（サブカラーブロック）
+            .case-new-job {
+               background-color: var(--color-sub);
+               padding: var(--space-s);
+               display: flex;
+               align-items: center;
+               gap: var(--space-s);
+
+               // 左側の「転職」ラベル
+               .badge-change {
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  justify-content: center;
+                  gap: 2px;
+                  padding: 8px;
+                  // ★明示的に白を指定
+                  border: 1px solid var(--color-white);
+                  color: var(--color-white);
+                  font-size: var(--fz-small);
+                  font-weight: bold;
+                  line-height: 1;
+               }
+
+               // 右側の職種・年収情報
+               .new-job-info {
+                  display: flex;
+                  flex-direction: column;
+                  gap: 0;
+                  flex: 1;
+                  text-align: center;
+                  // ★ベースを白に指定
+                  color: var(--color-white);
+
+                  .new-job-role {
+                     color: var(--color-accent-yellow); // ここは前回の指示通り黄色を維持
+                     font-size: var(--fz-body);
+                     font-weight: bold;
+                     line-height: 1.4;
+                     letter-spacing: 1px;
+                  }
+
+                  .new-job-salary {
+                     // ★明示的に白を指定
+                     color: var(--color-white);
+                     font-size: var(--fz-lead);
+                     font-weight: bold;
+                  }
+               }
+            }
+         }
+      }
+   }
+
+   // ---------------------------------------------
+   // 2. 下部のブリッジコピー
+   // ---------------------------------------------
+   .case-bottom-box {
+      background-color: var(--color-sub); // 濃いネイビー
+      padding: var(--space-m); // serviceセクションと同サイズのパディング
+      text-align: center;
+      border-radius: var(--border-radius);
+      box-shadow: var(--blur-shadow);
+
+      @include mq(md) {
+         padding: var(--space-m) var(--space-s);
+      }
+
+      p {
+         font-size: var(--fz-bridge); // 20px相当
+         font-family: var(--font-serif);
+         font-weight: bold;
+         line-height: 1.6;
+      }
+   }
+}

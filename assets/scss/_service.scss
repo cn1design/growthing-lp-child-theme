@@ -1,0 +1,102 @@
+@use "lp-style" as *;
+/* =============================================
+   SECTION 09 | Service (サービス・サポート体制)
+   ============================================= */
+
+.service-section {
+    position: relative;
+    z-index: 10;
+
+    // ---------------------------------------------
+    // 1. リスト部分（自動カウンター使用）
+    // ---------------------------------------------
+    .service-list {
+        .service-item {
+            position: relative;
+            padding: 32px 64px 32px 192px;
+            background-color: var(--color-white);
+            border-radius: var(--border-radius);
+
+            // 擬似要素で自動連番（01, 02...）
+            &::before {
+                content: counter(lp-counter, decimal-leading-zero);
+                position: absolute;
+                top: 24px;
+                left: 48px;
+                font-size: calc(var(--fz-large) * 1.5);
+                font-family: var(--font-serif);
+                font-weight: bold;
+                color: rgba(30, 58, 95, 0.2);
+                line-height: 1;
+            }
+
+            .service-item-title {
+                font-size: var(--fz-bridge);
+                font-weight: bold;
+                margin-bottom: var(--space-s);
+            }
+
+            .service-item-desc {
+                line-height: 1.8;
+                letter-spacing: 1px;
+                font-size: var(--fz-desc);
+                color: var(--color-main);
+            }
+
+            @include mq(md) {
+                padding: var(--space-l);
+
+                &::before {
+                    top: 0;
+                    left: auto;
+                    right: 16px;
+                    font-size: 128px;
+                    opacity: 0.3;
+                }
+            }
+        }
+    }
+
+    // ---------------------------------------------
+    // 2. 下部のベージュボックス
+    // ---------------------------------------------
+    .service-bottom-box {
+        position: relative;
+        z-index: 2;
+        background-color: var(--color-bg);
+        padding: var(--space-m);
+        text-align: center;
+        border-radius: var(--border-radius);
+        font-size: var(--fz-bridge);
+        line-height: 1.6;
+        box-shadow: var(--blur-shadow);
+
+        p {
+            font-family: var(--font-serif);
+            font-weight: bold;
+        }
+
+        @include mq(md) {
+            padding: var(--space-m) var(--space-s);
+        }
+    }
+
+    // ---------------------------------------------
+    // 3. 斜めのネイビー背景（疑似要素 ::after）
+    // ---------------------------------------------
+    &::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        aspect-ratio: 1440 / 268;
+        background-color: var(--color-main);
+        clip-path: polygon(0 100%, 100% 100%, 100% 0);
+        z-index: 1;
+
+        @include mq(md) {
+            clip-path: polygon(0 100%, 100% 100%, 100% 5vw);
+        }
+    }
+}
