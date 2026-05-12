@@ -13,7 +13,7 @@
 @use "case";
 @use "step";
 @use "profile";
-@use "pricing";
+// @use "pricing"; // 料金表セクション削除により無効化（復元時はコメントアウトを外す）
 @use "scroll-story";
 @use "cta-last";
 @use "present";
